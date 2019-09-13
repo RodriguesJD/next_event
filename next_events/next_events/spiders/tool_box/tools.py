@@ -1,10 +1,13 @@
 import arrow
 
 
-def event_url(tr):
-    lines = tr.split('\n')
-    url_line = lines[0]
-    url_event_ext = url_line.split("document.location='")[1].split("';")[0]
+def event_url(tr: str) -> str:
+    """
+    Take
+    :param tr:
+    :return:
+    """
+    url_event_ext = tr.split("document.location='")[1].split("';")[0]
     url = f"https://www.sherdog.com{url_event_ext}"
 
     return url
@@ -29,4 +32,5 @@ def soonest_date(odd_date, even_date):
         soonest = "even"
 
     return soonest
+
 

@@ -15,7 +15,7 @@ class UfcSpider(scrapy.Spider):
         # trs = trs_even + trs_odd
         next_odd_card = trs_odd.get()
         next_even_card = trs_even.get()
-
+        print(next_odd_card)
         odd_event_url = tools.event_url(next_odd_card)
         odd_event_date = tools.event_date(next_odd_card)
 
@@ -31,5 +31,5 @@ class UfcSpider(scrapy.Spider):
         yield scrapy.Request(next_card, callback=self.next_card)
 
     def next_card(self, response):
-        print(response.xpath("/html/body/div[2]/div[2]/div[1]/section[1]/div/div[2]").get())
-        # TODO get the fighters url
+        main_event_left = response.xpath("/html/body/div[2]/div[2]/div[1]/section[1]/div/div[2]/div[2]/div[1]").get()
+        # print(main_event_left)
