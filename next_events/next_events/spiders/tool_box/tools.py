@@ -3,9 +3,9 @@ import arrow
 
 def event_url(tr: str) -> str:
     """
-    Take
-    :param tr:
-    :return:
+    Take html and return a url of an event.
+    :param tr: html from scrapy spider.
+    :return: url for the next event
     """
     url_event_ext = tr.split("document.location='")[1].split("';")[0]
     url = f"https://www.sherdog.com{url_event_ext}"
