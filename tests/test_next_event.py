@@ -45,4 +45,8 @@ def test_event_date():
     assert arrow.get(event_date)
 
 
+def test_soonest_date():
+    sooner = '2019-09-14T00:00:00-07:00'  # odd
+    later = "2019-09-21T00:00:00-07:00"  # even
+    assert tools.soonest_date(sooner, later) == 'odd'
 

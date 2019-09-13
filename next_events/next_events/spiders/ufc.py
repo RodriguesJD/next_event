@@ -15,7 +15,7 @@ class UfcSpider(scrapy.Spider):
         # trs = trs_even + trs_odd
         next_odd_card = trs_odd.get()
         next_even_card = trs_even.get()
-        print(next_odd_card)
+
         odd_event_url = tools.event_url(next_odd_card)
         odd_event_date = tools.event_date(next_odd_card)
 
