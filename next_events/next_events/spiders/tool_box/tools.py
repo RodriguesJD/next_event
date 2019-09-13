@@ -3,9 +3,9 @@ import arrow
 
 def event_url(tr: str) -> str:
     """
-    Take html and return a url of an event.
+    Take html and return a url of a combat event.
     :param tr: html from scrapy spider.
-    :return: url for the next event
+    :return: url: url for the next combat event
     """
     url_event_ext = tr.split("document.location='")[1].split("';")[0]
     url = f"https://www.sherdog.com{url_event_ext}"
@@ -13,7 +13,12 @@ def event_url(tr: str) -> str:
     return url
 
 
-def event_date(tr):
+def event_date(tr: str) -> object:
+    """
+    Take html and return the combat event data as an arrow object.
+    :param tr: html from scrapy spider.
+    :return: date_time: the date and time of the combat event
+    """
     lines = tr.split('\n')
     date_time = None
     for line in lines:
