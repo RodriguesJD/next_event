@@ -6,7 +6,6 @@ authors = ["Jeremy Rodrigues <jeremy.rodrigues@therealreal.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-scrapy = "^1.7"
 arrow = "^0.15.1"
 requests = "^2.22"
 
