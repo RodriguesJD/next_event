@@ -8,6 +8,7 @@ authors = ["Jeremy Rodrigues <jeremy.rodrigues@therealreal.com>"]
 python = "^3.7"
 arrow = "^0.15.1"
 requests = "^2.22"
+requests_html = "^0.10.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
