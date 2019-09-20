@@ -1,12 +1,6 @@
 from requests_html import HTMLSession
 
-session = HTMLSession()
+from tool_box import tools
 
-r = session.get("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
-
-e = r.html.xpath('//*[@id="upcoming_tab"]/table')
-print(e[0].html)
-
-
-
-
+next_event_url = tools.next_event_url()
+print(next_event_url)
