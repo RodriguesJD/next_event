@@ -20,8 +20,12 @@ def next_event_url(events_page: object) -> str:
     return event_url
 
 
-def fighters_on_card(event_page):
-    # TODO create a test for this function
+def fighters_on_card(event_page: object) -> list:
+    """
+
+    :param event_page: HTMLSession() of then next event url
+    :return card: List of fighters urls for all the fighters on the card.
+    """
     card = []
     main_event_left = event_page.html.xpath('/html/body/div[2]/div[2]/div[1]/section[1]/div/div[2]/div[2]/div[1]/a')
     main_left = str(main_event_left[0]).split("href='")[1].split("' itemprop='url'>")[0]
