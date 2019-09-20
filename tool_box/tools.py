@@ -9,10 +9,11 @@ def html_session(url):
     return event_page
 
 
-def next_event_url(event_page) -> list:
+def next_event_url(event_page: object) -> str:
     """
     Parse events page and return the url for the next event.
-    :return: url for the next ufc event.
+    :param event_page: HTMLSession() of https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2
+    :return even_url: url for the next ufc event.
     """
     upcoming_events = event_page.html.xpath('//*[@id="upcoming_tab"]/table/tr[2]')
     event = upcoming_events[0].html.split("document.location='")[1].split("';")[0]
