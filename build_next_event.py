@@ -9,7 +9,8 @@ next_event_page = tools.html_session(next_event_url)
 
 fights = tools.fighters_on_card(next_event_page)
 
-
 for fight in fights:
-    print(fight)
-
+    for fighter_url in fight:
+        fighter_page = tools.html_session(fighter_url)
+        fighter_info = tools.fighter_info(fighter_page)
+        print(fighter_info)

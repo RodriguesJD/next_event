@@ -56,5 +56,16 @@ def fighters_on_card(event_page: object) -> list:
     return card
 
 
+def fighter_info(fighter_page):
+    fight_page = fighter_page.html.xpath("/html/body/div[2]/div[2]/div[1]")
+    age = fight_page[0].html.split('Born: <span itemprop="birthDate">')[1].split('<strong>AGE: ')[1].split('</strong>')[0]
+    record = fight_page[0].html.split('<span class="record">')[1].split('</span>')[0]
+    city = fight_page[0].html.split('class="locality">')[1].split('</span>')[0]
+    country = fight_page[0].html.split('<strong itemprop="nationality">')[1].split('</strong>')[0]
+
+    fighter_data = [age, record, city, country]
+
+    return fighter_data
+
 
 
