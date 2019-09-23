@@ -10,3 +10,4 @@ for fight in fights:
     for fighter_url in fight:
         fighter_page = tools.html_session(fighter_url)
         fighter_info = tools.fighter_info(fighter_page)
+        print(fighter_info)
