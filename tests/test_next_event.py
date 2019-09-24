@@ -38,17 +38,21 @@ def test_fighter_info():
             fighter_info = tools.fighter_info(fighter_page)
             assert isinstance(fighter_info, list)
 
-            age = fighter_info[0]
+            name = fighter_info[0]
+            assert isinstance(name, str)
+
+            age = fighter_info[1]
             assert isinstance(age, str)
             assert int(age)
 
-            record = fighter_info[1]
+            record = fighter_info[2]
             assert isinstance(record, str)
             record_int_only = record.replace(" ", "").replace("-", "")
             assert int(record_int_only)
 
-            city = fighter_info[2]
+            city = fighter_info[3]
             assert isinstance(city, str)
 
-            country = fighter_info[3]
+            country = fighter_info[4]
             assert isinstance(country, str)
+
