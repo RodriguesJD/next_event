@@ -15,7 +15,7 @@ for event in divs:
         fight_url = f"https://www.bestfightodds.com/{fight_url_ext}"
         if 'class="table-header-date">' in event:
             event_date_str = event.split('class="table-header-date">')[1].split('</span>')[0]
-            event_date = betting_tools.next_event_date(event_date_str)
+            event_date = betting_tools.next_betting_date(event_date_str)
             print(type(event_date))
             print(event_date)
             print(event_date_str)

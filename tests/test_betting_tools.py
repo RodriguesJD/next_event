@@ -6,8 +6,8 @@ def test_betting_page():
     assert str(type(page)) == "<class 'requests_html.HTMLResponse'>"
 
 
-def test_next_event_date():
+def test_next_betting_date():
     event_str = "September 16th"
-    event_date = betting_tools.next_event_date(event_str)
+    event_date = betting_tools.next_betting_date(event_str)
     assert isinstance(event_date, str)
     assert event_date == "2019-09-16"

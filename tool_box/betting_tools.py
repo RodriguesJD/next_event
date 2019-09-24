@@ -19,7 +19,7 @@ def betting_page() -> object:
     return page
 
 
-def next_event_date(event_str: str) -> str:
+def next_betting_date(event_str: str) -> str:
     """
     Take the parsed event_str from  https://www.bestfightodds.com and return a pendulum date.
 
