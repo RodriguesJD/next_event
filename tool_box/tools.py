@@ -1,3 +1,4 @@
+import pendulum
 from requests_html import HTMLSession
 
 
@@ -19,6 +20,24 @@ def next_event_url(events_page: object) -> str:
     event_url = f"https://www.sherdog.com{event}"
 
     return event_url
+
+
+def next_event_date(event_page):
+    event = event_page.html.xpath('/html/body/div[2]/div[2]/div[1]/div[1]/header/div/div[2]/div[2]/span[1]/text()')
+    event_date_str = event[0]
+
+    year = int(event_date_str.split(", ")[1])
+
+    months = {"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6,
+              "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12}
+    month_name = event_date_str.split(" ")[0]
+    month = months[month_name]
+
+    day = int(event_date_str.split(" ")[1].replace(",", ""))
+
+    event_date = pendulum.datetime(year, month, day)
+
+    return event_date
 
 
 def fighters_on_card(event_page: object) -> list:
@@ -94,8 +113,8 @@ def next_ufc_event() -> list:
     next_ufc_fight_card = []
     ufc_page = html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
     next_ufc_url = next_event_url(ufc_page)
-    # TODO get event date
     next_ufc_page = html_session(next_ufc_url)
+    # TODO get event date
     fights = fighters_on_card(next_ufc_page)
     for fight in fights:
         single_fight = []
