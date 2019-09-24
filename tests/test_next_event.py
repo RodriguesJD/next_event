@@ -2,15 +2,10 @@ import requests
 import pendulum.datetime as datetime
 
 from tool_box import event_tools
-
-
-def test_html_session():
-    session = event_tools.html_session("https://www.sherdog.com/events/UFC-Fight-Night-159-Rodriguez-vs-Stephens-76587")
-    assert session.status_code == 200
-
+from tool_box import tools
 
 def test_next_event_url():
-    event_page = event_tools.html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
+    event_page = tools.html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
     next_event_url = event_tools.next_event_url(event_page)
     domain = 'https://www.sherdog.com'
     assert domain in next_event_url
@@ -19,17 +14,17 @@ def test_next_event_url():
 
 
 def test_next_event_date():
-    ufc_page = event_tools.html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
+    ufc_page = tools.html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
     next_ufc_url = event_tools.next_event_url(ufc_page)
-    next_ufc_page = event_tools.html_session(next_ufc_url)
+    next_ufc_page = tools.html_session(next_ufc_url)
     event_date = event_tools.next_event_date(next_ufc_page)
     assert isinstance(event_date, str)
 
 
 def test_fighters_on_card():
-    events_page = event_tools.html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
+    events_page = tools.html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
     next_fight_url = event_tools.next_event_url(events_page)
-    event_page = event_tools.html_session(next_fight_url)
+    event_page = tools.html_session(next_fight_url)
     fights = event_tools.fighters_on_card(event_page)
     for fight in fights:
         for fighters_url in fight:
@@ -37,13 +32,13 @@ def test_fighters_on_card():
 
 
 def test_fighter_info():
-    events_page = event_tools.html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
+    events_page = tools.html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
     next_event_url = event_tools.next_event_url(events_page)
-    next_event_page = event_tools.html_session(next_event_url)
+    next_event_page = tools.html_session(next_event_url)
     fights = event_tools.fighters_on_card(next_event_page)
     for fight in fights:
         for fighter_url in fight:
-            fighter_page = event_tools.html_session(fighter_url)
+            fighter_page = tools.html_session(fighter_url)
             fighter_info = event_tools.fighter_info(fighter_page)
             assert isinstance(fighter_info, list)
 

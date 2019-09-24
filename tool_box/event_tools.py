@@ -1,11 +1,7 @@
 import pendulum
 from requests_html import HTMLSession
 
-
-def html_session(url):
-    session = HTMLSession()
-    event_page = session.get(url)
-    return event_page
+from tool_box import tools
 
 
 def next_event_url(events_page: object) -> str:
@@ -117,16 +113,16 @@ def next_ufc_event() -> list:
     :return next_ufc_fight_card:
     """
     next_ufc_fight_card = []
-    ufc_page = html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
+    ufc_page = tools.html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
     next_ufc_url = next_event_url(ufc_page)
-    next_ufc_page = html_session(next_ufc_url)
+    next_ufc_page = tools.html_session(next_ufc_url)
     event_date = next_event_date(next_ufc_page)
     next_ufc_fight_card.append(event_date)
     fights = fighters_on_card(next_ufc_page)
     for fight in fights:
         single_fight = []
         for fighter_url in fight:
-            fighter_page = html_session(fighter_url)
+            fighter_page = tools.html_session(fighter_url)
             fighter_information = fighter_info(fighter_page)
             fighter_information.append(fighter_url)
             single_fight.append(fighter_information)
