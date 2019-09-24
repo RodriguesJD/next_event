@@ -56,3 +56,34 @@ def test_fighter_info():
             country = fighter_info[4]
             assert isinstance(country, str)
 
+
+def test_next_ufc_event():
+    next_ufc = tools.next_ufc_event()
+    assert isinstance(next_ufc, list)
+
+    for fight in next_ufc:
+        assert isinstance(fight, list)
+        for fighter in fight:
+            assert isinstance(fighter, list)
+
+            name = fighter[0]
+            assert isinstance(name, str)
+
+            age = fighter[1]
+            assert isinstance(age, str)
+            assert int(age)
+
+            record = fighter[2]
+            assert isinstance(record, str)
+            record_int_only = record.replace(" ", "").replace("-", "")
+            assert int(record_int_only)
+
+            city = fighter[3]
+            assert isinstance(city, str)
+
+            country = fighter[4]
+            assert isinstance(country, str)
+
+            fighters_url = fighter[5]
+            assert isinstance(fighters_url, str)
+            assert requests.get(fighters_url).status_code == 200

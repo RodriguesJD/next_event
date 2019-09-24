@@ -85,4 +85,21 @@ def fighter_info(fighter_page: object) -> list:
     return fighter_data
 
 
+def next_ufc_event():
+    next_ufc_fight_card = []
+    ufc_page = html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
+    next_ufc_url = next_event_url(ufc_page)
+    # TODO get event date
+    next_ufc_page = html_session(next_ufc_url)
+    fights = fighters_on_card(next_ufc_page)
+    for fight in fights:
+        single_fight = []
+        for fighter_url in fight:
+            fighter_page = html_session(fighter_url)
+            fighter_information = fighter_info(fighter_page)
+            fighter_information.append(fighter_url)
+            single_fight.append(fighter_information)
 
+        next_ufc_fight_card.append(single_fight)
+
+    return next_ufc_fight_card
