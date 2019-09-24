@@ -19,7 +19,13 @@ def betting_page() -> object:
     return page
 
 
-def next_event_date(event_str):
+def next_event_date(event_str: str) -> str:
+    """
+    Take the parsed event_str from  https://www.bestfightodds.com and return a pendulum date.
+
+    :param event_str:  parsed event_str from  https://www.bestfightodds.com
+    :return event_date.to_date_string(): Pendulum output of the event date
+    """
     month_str = event_str.split(" ")[0][:3]
     month = tools.month_str_to_int(month_str)
     day_str = event_str.split(" ")[1]
