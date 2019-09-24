@@ -1,4 +1,5 @@
 import requests
+import pendulum.datetime as datetime
 
 from tool_box import tools
 
@@ -15,6 +16,14 @@ def test_next_event_url():
     assert domain in next_event_url
 
     assert requests.get(next_event_url).status_code == 200
+
+
+def test_next_event_date():
+    ufc_page = tools.html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
+    next_ufc_url = tools.next_event_url(ufc_page)
+    next_ufc_page = tools.html_session(next_ufc_url)
+    event_date = tools.next_event_date(next_ufc_page)
+    assert str(type(event_date)) == "<class 'pendulum.datetime.DateTime'>"
 
 
 def test_fighters_on_card():

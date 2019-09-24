@@ -22,7 +22,13 @@ def next_event_url(events_page: object) -> str:
     return event_url
 
 
-def next_event_date(event_page):
+def next_event_date(event_page: object) -> object:
+    """
+    Parse event_page and return the date of the next event.
+
+    :param event_page: HTMLSession() of then event page.
+    :return event_date: Pendulum datetime object.
+    """
     event = event_page.html.xpath('/html/body/div[2]/div[2]/div[1]/div[1]/header/div/div[2]/div[2]/span[1]/text()')
     event_date_str = event[0]
 
