@@ -10,7 +10,11 @@ from tool_box import tools
 # TODO get betonline.ag odds
 
 
-def betting_page():
+def betting_page() -> object:
+    """
+    HTMLResponse for https://www.bestfightodds.com
+    :return page: HTMLResponse for https://www.bestfightodds.com
+    """
     page = tools.html_session('https://www.bestfightodds.com')
     print(type(page))
     return page
