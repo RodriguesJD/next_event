@@ -56,7 +56,14 @@ def fighters_on_card(event_page: object) -> list:
     return card
 
 
-def fighter_info(fighter_page):
+def fighter_info(fighter_page: object) -> list:
+    """
+
+    Parse a fighter's information and return it as a list.
+
+    :param fighter_page: HTMLSession() of the fighters page from sherdog.com
+    :return fighter_data: A list of the fighters information.
+    """
     fight_page = fighter_page.html.xpath("/html/body/div[2]/div[2]/div[1]")
     name = fight_page[0].html.split('class="fn">')[1].split('</span>')[0]
     age = fight_page[0].html.split('Born: <span itemprop="birthDate">')[1].split('<strong>AGE: ')[1].split('</strong>')[0]
