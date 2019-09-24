@@ -10,6 +10,7 @@ def html_session(url):
 def next_event_url(events_page: object) -> str:
     """
     Parse events page and return the url for the next event.
+
     :param events_page: HTMLSession() of https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2
     :return even_url: url for the next ufc event.
     """
@@ -22,6 +23,8 @@ def next_event_url(events_page: object) -> str:
 
 def fighters_on_card(event_page: object) -> list:
     """
+
+    Parse event_page and return fighters urls.
 
     :param event_page: HTMLSession() of then next event url
     :return card: List of fighters urls for all the fighters on the card.
