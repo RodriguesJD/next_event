@@ -30,10 +30,8 @@ def next_event_date(event_page: object) -> object:
 
     year = int(event_date_str.split(", ")[1])
 
-    months = {"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6,
-              "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12}
     month_name = event_date_str.split(" ")[0]
-    month = months[month_name]
+    month = tools.month_str_to_int(month_name)
 
     day = int(event_date_str.split(" ")[1].replace(",", ""))
 
