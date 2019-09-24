@@ -85,7 +85,12 @@ def fighter_info(fighter_page: object) -> list:
     return fighter_data
 
 
-def next_ufc_event():
+def next_ufc_event() -> list:
+    """
+    Collect data on the next ufc event.
+
+    :return next_ufc_fight_card:
+    """
     next_ufc_fight_card = []
     ufc_page = html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
     next_ufc_url = next_event_url(ufc_page)
