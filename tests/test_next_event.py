@@ -23,7 +23,7 @@ def test_next_event_date():
     next_ufc_url = tools.next_event_url(ufc_page)
     next_ufc_page = tools.html_session(next_ufc_url)
     event_date = tools.next_event_date(next_ufc_page)
-    assert str(type(event_date)) == "<class 'pendulum.datetime.DateTime'>"
+    assert isinstance(event_date, str)
 
 
 def test_fighters_on_card():
@@ -70,29 +70,36 @@ def test_next_ufc_event():
     next_ufc = tools.next_ufc_event()
     assert isinstance(next_ufc, list)
 
+    counter = 0
     for fight in next_ufc:
-        assert isinstance(fight, list)
-        for fighter in fight:
-            assert isinstance(fighter, list)
+        if counter == 0:
+            # The first index is the event date.
+            event_date = fight
+            assert isinstance(event_date, str)
+            counter += 1
+        else:
+            assert isinstance(fight, list)
+            for fighter in fight:
+                assert isinstance(fighter, list)
 
-            name = fighter[0]
-            assert isinstance(name, str)
+                name = fighter[0]
+                assert isinstance(name, str)
 
-            age = fighter[1]
-            assert isinstance(age, str)
-            assert int(age)
+                age = fighter[1]
+                assert isinstance(age, str)
+                assert int(age)
 
-            record = fighter[2]
-            assert isinstance(record, str)
-            record_int_only = record.replace(" ", "").replace("-", "")
-            assert int(record_int_only)
+                record = fighter[2]
+                assert isinstance(record, str)
+                record_int_only = record.replace(" ", "").replace("-", "")
+                assert int(record_int_only)
 
-            city = fighter[3]
-            assert isinstance(city, str)
+                city = fighter[3]
+                assert isinstance(city, str)
 
-            country = fighter[4]
-            assert isinstance(country, str)
+                country = fighter[4]
+                assert isinstance(country, str)
 
-            fighters_url = fighter[5]
-            assert isinstance(fighters_url, str)
-            assert requests.get(fighters_url).status_code == 200
+                fighters_url = fighter[5]
+                assert isinstance(fighters_url, str)
+                assert requests.get(fighters_url).status_code == 200
