@@ -16,7 +16,6 @@ def betting_page() -> object:
     :return page: HTMLResponse for https://www.bestfightodds.com
     """
     page = tools.html_session('https://www.bestfightodds.com')
-    print(type(page))
     return page
 
 
