@@ -25,3 +25,34 @@ def test_fighters_on_card():
     for fight in fights:
         for fighters_url in fight:
             assert requests.get(fighters_url).status_code == 200
+
+
+def test_fighter_info():
+    events_page = tools.html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
+    next_event_url = tools.next_event_url(events_page)
+    next_event_page = tools.html_session(next_event_url)
+    fights = tools.fighters_on_card(next_event_page)
+    for fight in fights:
+        for fighter_url in fight:
+            fighter_page = tools.html_session(fighter_url)
+            fighter_info = tools.fighter_info(fighter_page)
+            assert isinstance(fighter_info, list)
+
+            name = fighter_info[0]
+            assert isinstance(name, str)
+
+            age = fighter_info[1]
+            assert isinstance(age, str)
+            assert int(age)
+
+            record = fighter_info[2]
+            assert isinstance(record, str)
+            record_int_only = record.replace(" ", "").replace("-", "")
+            assert int(record_int_only)
+
+            city = fighter_info[3]
+            assert isinstance(city, str)
+
+            country = fighter_info[4]
+            assert isinstance(country, str)
+
