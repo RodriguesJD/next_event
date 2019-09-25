@@ -113,3 +113,18 @@ def betting_odds(event_page: object, events_id: str) -> list:
     return event_odds
 
 
+def next_ufc_betting_odds() -> list:
+    """
+    Gather the betting odds for the next ufc event.
+
+    :return odds: List of the betting odds for the next ufc event.
+    """
+    promotion = 'ufc'
+    bet_page = betting_page()
+    bet_events = betting_events(bet_page)
+    next_bet_url = next_betting_url(bet_events, promotion)
+    get_event_id = event_id(next_bet_url)
+    event_page = tools.html_session(next_bet_url)
+    odds = betting_odds(event_page, get_event_id)
+
+    return odds, promotion

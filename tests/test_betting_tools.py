@@ -55,3 +55,12 @@ def test_betting_odds():
         for fight_info in fighter_odds:
             assert isinstance(fight_info, str)
 
+
+def test_next_ufc_betting_odds():
+    betting_odds = betting_tools.next_ufc_betting_odds()
+    for fighter_odds in betting_odds[0]:
+        assert isinstance(fighter_odds, list)
+        for fight_info in fighter_odds:
+            assert isinstance(fight_info, str)
+
+    assert betting_odds[1] == 'ufc'
