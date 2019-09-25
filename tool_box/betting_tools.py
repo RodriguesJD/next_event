@@ -65,7 +65,12 @@ def next_betting_date(event_str: str) -> str:
     return event_date.to_date_string()
 
 
-def event_id(even_url):
+def event_id(even_url: str) -> str:
+    """
+    Parse the event if from the event url
+    :param even_url: url of the event
+    :return e_id: The events id
+    """
     e_id = even_url.split("-")[-1]
     return e_id
 
