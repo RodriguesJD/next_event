@@ -75,7 +75,13 @@ def event_id(even_url: str) -> str:
     return e_id
 
 
-def betting_odds(event_page, events_id):
+def betting_odds(event_page: object, events_id: str) -> list:
+    """
+    Parse event page for fighters name and there betting odds.
+    :param event_page: HTMLResponse of the event page.
+    :param events_id: The event id as a string.
+    :return event_odds: All the fighters names and there betting odds.
+    """
     event_odds = []
     odds_table = event_page.html.xpath(f'//*[@id="event{events_id}"]/div[2]/div[3]/table')
     t = odds_table[0].html.split('<tr')

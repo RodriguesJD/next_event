@@ -14,7 +14,6 @@ for fighter_odds in betting_odds:
         print(item)
 
 
-
 # next_event = event_tools.next_ufc_event()
 # for fight in next_event:
 #     for fighter in fight:
