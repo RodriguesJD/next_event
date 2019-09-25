@@ -1,3 +1,6 @@
+from requests_html import HTMLSession
+
+
 from tool_box import betting_tools
 
 
@@ -20,3 +23,13 @@ def test_next_betting_date():
     event_date = betting_tools.next_betting_date(event_str)
     assert isinstance(event_date, str)
     assert event_date == "2019-09-16"
+
+
+def test_next_betting_url():
+    betting_page = betting_tools.betting_page()
+    betting_events = betting_tools.betting_events(betting_page)
+    next_betting_url = betting_tools.next_betting_url(betting_events, 'ufc')
+    session = HTMLSession()
+    assert session.get(next_betting_url).status_code == 200
+    assert 'ufc' in next_betting_url
+

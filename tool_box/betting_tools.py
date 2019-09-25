@@ -61,6 +61,12 @@ def next_betting_date(event_str: str) -> str:
     return event_date.to_date_string()
 
 
-def next_betting_event(event_str, promotion):
-    if "ufc" in event_str:
-        print("event_found")
+def next_betting_url(event_divs, promotion):
+    next_event_url = None  # the first event in the loop will be the next event.
+    for event in event_divs:
+        if promotion in event and not next_event_url:
+            event_url_no_domain = event.split('<a href="')[1].split('">')[0]
+            event_url = f"https://www.bestfightodds.com{event_url_no_domain}"
+            next_event_url = event_url
+
+    return next_event_url
