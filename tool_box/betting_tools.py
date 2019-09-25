@@ -75,20 +75,38 @@ def event_id(even_url: str) -> str:
     return e_id
 
 
-def parse_page(event_page):
-    odds_table = event_page.html.xpath('//*[@id="event1747"]/div[2]/div[3]/table')
+def betting_odds(event_page, events_id):
+    event_odds = []
+    odds_table = event_page.html.xpath(f'//*[@id="event{events_id}"]/div[2]/div[3]/table')
     t = odds_table[0].html.split('<tr')
     for tr_num in range(1, len(t) - 1):
-        name_html = event_page.html.xpath(f'//*[@id="event1747"]/div[2]/div[3]/table/tbody/tr[{tr_num}]/th/a/span')
+        fighter_odds = []
+        name_html = event_page.html.xpath(f'//*[@id="event{events_id}"]/div[2]/div[3]/table/tbody/tr[{tr_num}]/th/a/span')
         if name_html:
             fighter_name = name_html[0].text
-            print(fighter_name)
+            fighter_odds.append(fighter_name)
 
-        betdsi_odds = event_page.html.xpath(f'//*[@id="event1747"]/div[2]/div[3]/table/tbody/tr[{tr_num}]/td[2]/a/span')
+        betdsi_odds = event_page.html.xpath(f'//*[@id="event{events_id}"]/div[2]/div[3]/table/tbody/tr[{tr_num}]/td[2]/a/span')
         if betdsi_odds:
-            print(betdsi_odds[0].text)
-        # //*[@id="event1747"]/div[2]/div[3]/table/tbody/tr[1]/td[2]/a/span
-        # //*[@id="event1747"]/div[2]/div[3]/table/tbody/tr[2]/td[2]/a/span
+            betdsi_with_label = f'betdsi: {betdsi_odds[0].text}'
+            fighter_odds.append(betdsi_with_label)
+
+        sportsbook_odds = event_page.html.xpath(f'//*[@id="event{events_id}"]/div[2]/div[3]/table/tbody/tr[{tr_num}]/td[7]/a/span')
+        if sportsbook_odds:
+            sportsbook_with_label = f'sportsbook: {sportsbook_odds[0].text}'
+            fighter_odds.append(sportsbook_with_label)
+
+        betonline_odds = event_page.html.xpath(f'//*[@id="event{events_id}"]/div[2]/div[3]/table/tbody/tr[{tr_num}]/td[11]/a/span')
+        if betonline_odds:
+            betonline_with_label = f'betonline: {betonline_odds[0].text}'
+            fighter_odds.append(betonline_with_label)
+
+        if fighter_odds:
+            event_odds.append(fighter_odds)
+
+    return event_odds
+
+
 
 
 # TODO get sportsbook.ag odds
