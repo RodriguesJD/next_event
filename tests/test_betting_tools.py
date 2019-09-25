@@ -9,6 +9,15 @@ def test_betting_page():
     assert str(type(page)) == "<class 'requests_html.HTMLResponse'>"
 
 
+def test_next_betting_url():
+    betting_page = betting_tools.betting_page()
+    betting_events = betting_tools.betting_events(betting_page)
+    next_betting_url = betting_tools.next_betting_url(betting_events, 'ufc')
+    session = HTMLSession()
+    assert session.get(next_betting_url).status_code == 200
+    assert 'ufc' in next_betting_url
+
+
 def test_betting_events():
     betting_page = betting_tools.betting_page()
     betting_events = betting_tools.betting_events(betting_page)
@@ -25,11 +34,11 @@ def test_next_betting_date():
     assert event_date == "2019-09-16"
 
 
-def test_next_betting_url():
+def test_event_id():
     betting_page = betting_tools.betting_page()
     betting_events = betting_tools.betting_events(betting_page)
     next_betting_url = betting_tools.next_betting_url(betting_events, 'ufc')
-    session = HTMLSession()
-    assert session.get(next_betting_url).status_code == 200
-    assert 'ufc' in next_betting_url
+    event_id = betting_tools.event_id(next_betting_url)
+    assert isinstance(event_id, str)
+    assert int(event_id)
 
