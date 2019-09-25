@@ -1,6 +1,6 @@
 from requests_html import HTMLSession
 
-
+from tool_box import tools
 from tool_box import betting_tools
 
 
@@ -41,4 +41,17 @@ def test_event_id():
     event_id = betting_tools.event_id(next_betting_url)
     assert isinstance(event_id, str)
     assert int(event_id)
+
+
+def test_betting_odds():
+    betting_page = betting_tools.betting_page()
+    betting_events = betting_tools.betting_events(betting_page)
+    next_betting_url = betting_tools.next_betting_url(betting_events, 'ufc')
+    event_id = betting_tools.event_id(next_betting_url)
+    event_page = tools.html_session(next_betting_url)
+    betting_odds = betting_tools.betting_odds(event_page, event_id)
+    for fighter_odds in betting_odds:
+        assert isinstance(fighter_odds, list)
+        for fight_info in fighter_odds:
+            assert isinstance(fight_info, str)
 

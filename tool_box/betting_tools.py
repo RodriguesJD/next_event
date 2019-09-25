@@ -107,9 +107,3 @@ def betting_odds(event_page, events_id):
     return event_odds
 
 
-
-
-# TODO get sportsbook.ag odds
-# TODO get betdsi.com odds
-# TODO get betonline.ag odds
-
