@@ -4,6 +4,7 @@ import pendulum.datetime as datetime
 from tool_box import event_tools
 from tool_box import tools
 
+
 def test_next_event_url():
     event_page = tools.html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
     next_event_url = event_tools.next_event_url(event_page)

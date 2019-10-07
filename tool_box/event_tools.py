@@ -65,12 +65,14 @@ def fighters_on_card(event_page: object) -> list:
 
     for tr_number in range(2, number_of_fights_left + 2):
         left_fighter = event_page.html.xpath(f'/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tr[{tr_number}]/td[2]')
-        l_fighter = left_fighter[0].html.split('href="/fighter/')[1].split('"><span')[0]
-        left_fighter_url = f"https://www.sherdog.com/fighter/{l_fighter}"
+        if left_fighter:
+            l_fighter = left_fighter[0].html.split('href="/fighter/')[1].split('"><span')[0]
+            left_fighter_url = f"https://www.sherdog.com/fighter/{l_fighter}"
 
         right_fighter = event_page.html.xpath(f'/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tr[{tr_number}]/td[4]')
-        r_fighter = right_fighter[0].html.split('href="/fighter/')[1].split('"><span')[0]
-        right_fighter_url = f"https://www.sherdog.com/fighter/{r_fighter}"
+        if right_fighter:
+            r_fighter = right_fighter[0].html.split('href="/fighter/')[1].split('"><span')[0]
+            right_fighter_url = f"https://www.sherdog.com/fighter/{r_fighter}"
 
         fight = [left_fighter_url, right_fighter_url]
         card.append(fight)
@@ -88,7 +90,10 @@ def fighter_info(fighter_page: object) -> list:
     """
     fight_page = fighter_page.html.xpath("/html/body/div[2]/div[2]/div[1]")
     name = fight_page[0].html.split('class="fn">')[1].split('</span>')[0]
-    age = fight_page[0].html.split('Born: <span itemprop="birthDate">')[1].split('<strong>AGE: ')[1].split('</strong>')[0]
+    try:
+        age = fight_page[0].html.split('Born: <span itemprop="birthDate">')[1].split('<strong>AGE: ')[1].split('</strong>')[0]
+    except IndexError:
+        age = "N/A"
     record = fight_page[0].html.split('<span class="record">')[1].split('</span>')[0]
     birth_place = fight_page[0].html.split("birthplace")
 
