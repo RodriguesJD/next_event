@@ -119,8 +119,6 @@ def next_ufc_event() -> list:
     ufc_page = tools.html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
     next_ufc_url = next_event_url(ufc_page)
     next_ufc_page = tools.html_session(next_ufc_url)
-    event_date = next_event_date(next_ufc_page)
-    next_ufc_fight_card.append(event_date)
     fights = fighters_on_card(next_ufc_page)
     for fight in fights:
         single_fight = []
