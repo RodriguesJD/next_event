@@ -80,7 +80,7 @@ def fighters_on_card(event_page: object) -> list:
     return card
 
 
-def fighter_info(fighter_page: object) -> list:
+def fighter_info(fighter_page: object) -> dict:
     """
 
     Parse a fighter's information and return it as a list.
@@ -101,12 +101,15 @@ def fighter_info(fighter_page: object) -> list:
         city = fight_page[0].html.split('class="locality">')[1].split('</span>')[0]
     else:
         city = "unknown"
-
     country = fight_page[0].html.split('<strong itemprop="nationality">')[1].split('</strong>')[0]
 
-    fighter_data = [name, age, record, city, country]
+    fighters_info = {"name": name,
+                     "age": age,
+                     "record": record,
+                     "city": city,
+                     "country": country}
 
-    return fighter_data
+    return fighters_info
 
 
 def next_ufc_event() -> list:
@@ -122,10 +125,11 @@ def next_ufc_event() -> list:
     fights = fighters_on_card(next_ufc_page)
     for fight in fights:
         single_fight = []
+        # TODO return fighter_url as a dict
         for fighter_url in fight:
             fighter_page = tools.html_session(fighter_url)
-            fighter_information = fighter_info(fighter_page)
-            fighter_information.append(fighter_url)
+            # TODO add fighter_url to fighter_information and make if a single dict
+            fighter_information = [fighter_info(fighter_page), fighter_url]
             single_fight.append(fighter_information)
 
         next_ufc_fight_card.append(single_fight)

@@ -126,7 +126,6 @@ def next_ufc_betting_odds() -> list:
     next_bet_url = next_betting_url(bet_events, promotion)
     get_event_id = event_id(next_bet_url)
     event_page = tools.html_session(next_bet_url)
-    # TODO create a func that turn the odds into a list of dicts
     odds = betting_odds(event_page, get_event_id)
 
     return odds, promotion

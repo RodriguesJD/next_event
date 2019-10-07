@@ -13,7 +13,6 @@ class NextUfcEvent:
 
     # list of betting odds organized by fighters name which is in index[0].
     next_ufc_betting_odds = betting_tools.next_ufc_betting_odds()[0]
-
     # list of fighters information and there betting odds.
     event_odds = []
 
@@ -22,7 +21,7 @@ class NextUfcEvent:
         for fight in self.next_event:
             fight_odds = []  # list of an individual fight in the overall fight card.
             for fighter in fight:
-                fighter_name = fighter[0]  # this name is derived from the next_event list
+                fighter_name = fighter[0]["name"]  # this name is derived from the next_event list
                 for odds in self.next_ufc_betting_odds:
                     fighter_name_in_odds = odds[0]  # this name is derived from the next_ufc_betting_odds
                     if fighter_name == fighter_name_in_odds:  # match the fighters event and betting information.

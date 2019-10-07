@@ -41,54 +41,54 @@ def test_fighter_info():
         for fighter_url in fight:
             fighter_page = tools.html_session(fighter_url)
             fighter_info = event_tools.fighter_info(fighter_page)
-            assert isinstance(fighter_info, list)
+            assert isinstance(fighter_info, dict)
 
-            name = fighter_info[0]
+            name = fighter_info["name"]
             assert isinstance(name, str)
 
-            age = fighter_info[1]
+            age = fighter_info["age"]
             assert isinstance(age, str)
             assert int(age)
 
-            record = fighter_info[2]
+            record = fighter_info["record"]
             assert isinstance(record, str)
             record_int_only = record.replace(" ", "").replace("-", "")
             assert int(record_int_only)
 
-            city = fighter_info[3]
+            city = fighter_info["city"]
             assert isinstance(city, str)
 
-            country = fighter_info[4]
+            country = fighter_info["country"]
             assert isinstance(country, str)
 
 
 def test_next_ufc_event():
     next_ufc = event_tools.next_ufc_event()
     assert isinstance(next_ufc, list)
-
-    counter = 0
     for fight in next_ufc:
         assert isinstance(fight, list)
         for fighter in fight:
             assert isinstance(fighter, list)
-            name = fighter[0]
+            fighter_dict = fighter[0]
+            assert isinstance(fighter_dict, dict)
+            name = fighter_dict["name"]
             assert isinstance(name, str)
 
-            age = fighter[1]
+            age = fighter_dict["age"]
             assert isinstance(age, str)
             assert int(age)
 
-            record = fighter[2]
+            record = fighter_dict["record"]
             assert isinstance(record, str)
             record_int_only = record.replace(" ", "").replace("-", "")
             assert int(record_int_only)
 
-            city = fighter[3]
+            city = fighter_dict["city"]
             assert isinstance(city, str)
 
-            country = fighter[4]
+            country = fighter_dict["country"]
             assert isinstance(country, str)
 
-            fighters_url = fighter[5]
+            fighters_url = fighter[1]
             assert isinstance(fighters_url, str)
             assert requests.get(fighters_url).status_code == 200
