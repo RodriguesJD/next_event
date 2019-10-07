@@ -78,6 +78,7 @@ def event_id(even_url: str) -> str:
 def betting_odds(event_page: object, events_id: str) -> list:
     """
     Parse event page for fighters name and there betting odds.
+
     :param event_page: HTMLResponse of the event page.
     :param events_id: The event id as a string.
     :return event_odds: All the fighters names and there betting odds.
