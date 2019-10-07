@@ -36,4 +36,4 @@ class NextUfcEvent:
 
 
 if __name__ == '__main__':
-    NextUfcEvent().main()
+    print(NextUfcEvent().main())

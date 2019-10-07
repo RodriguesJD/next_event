@@ -52,15 +52,30 @@ def test_betting_odds():
     betting_odds = betting_tools.betting_odds(event_page, event_id)
     for fighter_odds in betting_odds:
         assert isinstance(fighter_odds, list)
+        line_count = 0
         for fight_info in fighter_odds:
-            assert isinstance(fight_info, str)
+            if line_count == 0:
+                fighter_name = fight_info
+                assert isinstance(fighter_name, str)
+                line_count += 1
+            else:
+                assert isinstance(fight_info, dict)
+        line_count = 0  # reset line count for the next fighter_odds
 
 
 def test_next_ufc_betting_odds():
     betting_odds = betting_tools.next_ufc_betting_odds()
     for fighter_odds in betting_odds[0]:
         assert isinstance(fighter_odds, list)
+        line_count = 0
         for fight_info in fighter_odds:
-            assert isinstance(fight_info, str)
+            if line_count == 0:
+                fighter_name = fight_info
+                assert isinstance(fighter_name, str)
+                line_count += 1
+            else:
+                assert isinstance(fight_info, dict)
+
+        line_count = 0  # reset line count for the next fighter_odds
 
     assert betting_odds[1] == 'ufc'

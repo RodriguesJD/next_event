@@ -95,17 +95,17 @@ def betting_odds(event_page: object, events_id: str) -> list:
 
         betdsi_odds = event_page.html.xpath(f'//*[@id="event{events_id}"]/div[2]/div[3]/table/tbody/tr[{tr_num}]/td[2]/a/span')
         if betdsi_odds:
-            betdsi_with_label = f'betdsi: {betdsi_odds[0].text}'
+            betdsi_with_label = {"betdsi": f"{betdsi_odds[0].text}"}
             fighter_odds.append(betdsi_with_label)
 
         sportsbook_odds = event_page.html.xpath(f'//*[@id="event{events_id}"]/div[2]/div[3]/table/tbody/tr[{tr_num}]/td[7]/a/span')
         if sportsbook_odds:
-            sportsbook_with_label = f'sportsbook: {sportsbook_odds[0].text}'
+            sportsbook_with_label = {"sportsbook": f"{sportsbook_odds[0].text}"}
             fighter_odds.append(sportsbook_with_label)
 
         betonline_odds = event_page.html.xpath(f'//*[@id="event{events_id}"]/div[2]/div[3]/table/tbody/tr[{tr_num}]/td[11]/a/span')
         if betonline_odds:
-            betonline_with_label = f'betonline: {betonline_odds[0].text}'
+            betonline_with_label = {"betonline": f"{betonline_odds[0].text}"}
             fighter_odds.append(betonline_with_label)
 
         if fighter_odds:
