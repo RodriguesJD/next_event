@@ -26,7 +26,6 @@ class NextUfcEvent:
                 for odds in self.next_ufc_betting_odds:
                     fighter_name_in_odds = odds[0]  # this name is derived from the next_ufc_betting_odds
                     if fighter_name == fighter_name_in_odds:  # match the fighters event and betting information.
-                        # TODO create a func that turn the odds into a list of dicts
                         odds.pop(0)  # Remove the fighters name from the odds var.
                         fighter.insert(5, odds)
                         fight_odds.append(fighter)
