@@ -42,5 +42,4 @@ class NextUfcEvent:
 
 
 if __name__ == '__main__':
-    for fight in NextUfcEvent().main():
-        print(fight)
+    NextUfcEvent().main()
