@@ -8,7 +8,7 @@ class NextUfcEvent:
     Gather fight data on the next UFC and compile it with betting odds.
     """
 
-    # list of ufc fights in order from last fight to first fight.
+    # list of ufc fights in order from first fight to last fight.
     next_event = event_tools.next_ufc_event()
 
     # list of betting odds organized by fighters name which is in index[0].
