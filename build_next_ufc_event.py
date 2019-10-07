@@ -18,6 +18,7 @@ class NextUfcEvent:
     event_odds = []
 
     def main(self):
+        # TODO remove date from next_event. If date is needed later figure out a different way to pass it.
         line_count = 0
         for fight in self.next_event:
             fight_odds = []  # list of an individual fight in the overall fight card.
