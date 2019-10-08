@@ -1,6 +1,7 @@
+from pprint import pprint
+
 from tool_box import betting_tools
 from tool_box import event_tools
-from tool_box import tools
 
 
 class NextUfcEvent:
@@ -34,4 +35,5 @@ class NextUfcEvent:
 
 
 if __name__ == '__main__':
-    print(NextUfcEvent().main())
+    NextUfcEvent().main()
+
