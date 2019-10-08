@@ -1,5 +1,4 @@
 import requests
-import pendulum.datetime as datetime
 
 from tool_box import event_tools
 from tool_box import tools
@@ -68,27 +67,25 @@ def test_next_ufc_event():
     for fight in next_ufc:
         assert isinstance(fight, list)
         for fighter in fight:
-            assert isinstance(fighter, list)
-            fighter_dict = fighter[0]
-            assert isinstance(fighter_dict, dict)
-            name = fighter_dict["name"]
+            assert isinstance(fighter, dict)
+            name = fighter["name"]
             assert isinstance(name, str)
 
-            age = fighter_dict["age"]
+            age = fighter["age"]
             assert isinstance(age, str)
             assert int(age)
 
-            record = fighter_dict["record"]
+            record = fighter["record"]
             assert isinstance(record, str)
             record_int_only = record.replace(" ", "").replace("-", "")
             assert int(record_int_only)
 
-            city = fighter_dict["city"]
+            city = fighter["city"]
             assert isinstance(city, str)
 
-            country = fighter_dict["country"]
+            country = fighter["country"]
             assert isinstance(country, str)
 
-            fighters_url = fighter[1]
+            fighters_url = fighter["fighter_url"]
             assert isinstance(fighters_url, str)
             assert requests.get(fighters_url).status_code == 200

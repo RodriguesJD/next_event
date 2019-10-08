@@ -129,7 +129,8 @@ def next_ufc_event() -> list:
         for fighter_url in fight:
             fighter_page = tools.html_session(fighter_url)
             # TODO add fighter_url to fighter_information and make if a single dict
-            fighter_information = [fighter_info(fighter_page), fighter_url]
+            fighter_information = fighter_info(fighter_page)
+            fighter_information["fighter_url"] = fighter_url
             single_fight.append(fighter_information)
 
         next_ufc_fight_card.append(single_fight)
