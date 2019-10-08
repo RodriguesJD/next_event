@@ -112,27 +112,30 @@ def fighter_info(fighter_page: object) -> dict:
     return fighters_info
 
 
-def next_ufc_event() -> list:
+def next_ufc_event() -> dict:
     """
     Collect data on the next ufc event.
 
     :return next_ufc_fight_card:
     """
+
     next_ufc_fight_card = []
     ufc_page = tools.html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
     next_ufc_url = next_event_url(ufc_page)
     next_ufc_page = tools.html_session(next_ufc_url)
+    next_ufc_dict = {"event_date": next_event_date(next_ufc_page)}
     fights = fighters_on_card(next_ufc_page)
+
     for fight in fights:
         single_fight = []
-        # TODO return fighter_url as a dict
         for fighter_url in fight:
             fighter_page = tools.html_session(fighter_url)
-            # TODO add fighter_url to fighter_information and make if a single dict
             fighter_information = fighter_info(fighter_page)
             fighter_information["fighter_url"] = fighter_url
             single_fight.append(fighter_information)
 
         next_ufc_fight_card.append(single_fight)
 
-    return next_ufc_fight_card
+    next_ufc_dict["fights"] = next_ufc_fight_card
+
+    return next_ufc_dict

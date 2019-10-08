@@ -63,8 +63,8 @@ def test_fighter_info():
 
 def test_next_ufc_event():
     next_ufc = event_tools.next_ufc_event()
-    assert isinstance(next_ufc, list)
-    for fight in next_ufc:
+    assert isinstance(next_ufc, dict)
+    for fight in next_ufc["fights"]:
         assert isinstance(fight, list)
         for fighter in fight:
             assert isinstance(fighter, dict)

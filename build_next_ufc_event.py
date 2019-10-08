@@ -9,16 +9,16 @@ class NextUfcEvent:
     Gather fight data on the next UFC and compile it with betting odds.
     """
 
-    # list of ufc fights in order from first fight to last fight.
+    # list of ufc fights in order from first last fight to first fight.
     next_event = event_tools.next_ufc_event()
 
     # list of betting odds organized by fighters name which is in index[0].
     next_ufc_betting_odds = betting_tools.next_ufc_betting_odds()[0]
     # list of fighters information and there betting odds.
-    event_odds = []
 
-    def main(self):
-        for fight in self.next_event:
+    def combine_event_odds(self):
+        event_odds = []
+        for fight in self.next_event["fights"]:
             fight_odds = []  # list of an individual fight in the overall fight card.
             for fighter in fight:
                 fighter_name = fighter["name"]  # this name is derived from the next_event list
@@ -29,9 +29,15 @@ class NextUfcEvent:
                         fighter["odds"] = odds
                         fight_odds.append(fighter)
 
-            self.event_odds.append(fight_odds)
+            event_odds.append(fight_odds)
 
-        return self.event_odds
+        return event_odds
+
+    def main(self):
+        next_ufc_event = {"event_date": self.next_event["event_date"],
+                          "fights": self.combine_event_odds()}
+
+        return next_ufc_event
 
 
 if __name__ == '__main__':
