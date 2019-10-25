@@ -14,6 +14,7 @@ def betting_page() -> object:
 
 
 def next_betting_url(event_divs, promotion):
+    # TODO add next_betting_url logic to betting_events(betting_events_page: object) then remove the funct.
     next_event_url = None  # the first event in the loop will be the next event.
     for event in event_divs:
         if promotion in event and not next_event_url:
@@ -65,13 +66,14 @@ def next_betting_date(event_str: str) -> str:
     return event_date.to_date_string()
 
 
-def event_id(even_url: str) -> str:
+def event_id(event_url: str) -> str:
     """
-    Parse the event if from the event url
-    :param even_url: url of the event
+    Parse the event id from the event url
+    :param event_url: url of the event
     :return e_id: The events id
+
     """
-    e_id = even_url.split("-")[-1]
+    e_id = event_url.split("-")[-1]
     return e_id
 
 
@@ -85,7 +87,7 @@ def betting_odds(event_page: object, events_id: str) -> list:
     """
     event_odds = []
     odds_table = event_page.html.xpath(f'//*[@id="event{events_id}"]/div[2]/div[3]/table')
-    t = odds_table[0].html.split('<tr')
+    t = odds_table[0].html.split('<tr')  # TODO what is this line doing
     for tr_num in range(1, len(t) - 1):
         fighter_odds = []
         name_html = event_page.html.xpath(f'//*[@id="event{events_id}"]/div[2]/div[3]/table/tbody/tr[{tr_num}]/th/a/span')
@@ -109,7 +111,8 @@ def betting_odds(event_page: object, events_id: str) -> list:
             fighter_odds.append(betonline_with_label)
 
         if fighter_odds:
-            event_odds.append(fighter_odds)
+            if isinstance(fighter_odds[0], str):
+                event_odds.append(fighter_odds)
 
     return event_odds
 

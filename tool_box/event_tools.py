@@ -46,9 +46,10 @@ def fighters_on_card(event_page: object) -> list:
     Parse event_page and return fighters urls.
 
     :param event_page: HTMLSession() of then next event url
-    :return card: List of fighters urls for all the fighters on the card.
+    :return card: List of fighters urls for all fighters on the card.
     """
     card = []
+
     main_event_left = event_page.html.xpath('/html/body/div[2]/div[2]/div[1]/section[1]/div/div[2]/div[2]/div[1]/a')
     main_left = str(main_event_left[0]).split("href='")[1].split("' itemprop='url'>")[0]
     main_left_fighter_url = f"https://www.sherdog.com{main_left}"
@@ -60,8 +61,7 @@ def fighters_on_card(event_page: object) -> list:
     main_event = [main_left_fighter_url, main_right_fighter_url]
     card.append(main_event)
 
-    number_of_fights_left = int(event_page.html.
-                                xpath('/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tr[2]/td[1]')[0].text)
+    number_of_fights_left = int(event_page.html.xpath('/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tr[2]/td[1]')[0].text)
 
     for tr_number in range(2, number_of_fights_left + 2):
         left_fighter = event_page.html.xpath(f'/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tr[{tr_number}]/td[2]')
@@ -124,6 +124,7 @@ def next_ufc_event() -> dict:
     next_ufc_url = next_event_url(ufc_page)
     next_ufc_page = tools.html_session(next_ufc_url)
     next_ufc_dict = {"event_date": next_event_date(next_ufc_page)}
+    # TODO add promotion to dict
     fights = fighters_on_card(next_ufc_page)
 
     for fight in fights:

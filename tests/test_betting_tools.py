@@ -44,8 +44,13 @@ def test_event_id():
 
 
 def test_betting_odds():
+    # HTMLResponse for https://www.bestfightodds.com
     betting_page = betting_tools.betting_page()
+
+    # Parse HTMLResponse for all betting events and return the html as a list.
     betting_events = betting_tools.betting_events(betting_page)
+
+    # The first event in the loop will be the next event.
     next_betting_url = betting_tools.next_betting_url(betting_events, 'ufc')
     event_id = betting_tools.event_id(next_betting_url)
     event_page = tools.html_session(next_betting_url)

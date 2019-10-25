@@ -27,5 +27,16 @@ class NextUfcEvent:
 
 
 if __name__ == '__main__':
-    NextUfcEvent().main()
+    ne = NextUfcEvent().main()
+    # for fight in ne['fights']:
+    #     for fighter in fight:
+    #         name = fighter['name']
+    #         age = fighter['age']
+    #         odds = fighter['odds']
+    #         print(name, age)
+    #         print(odds)
+    #     print("---------------------------------------------------")
+    #
+    # print(ne)
+
 
