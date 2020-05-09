@@ -25,7 +25,11 @@ def next_event_date(event_page: object) -> object:
     :param event_page: HTMLSession() of then event page.
     :return event_date: Pendulum datetime object.
     """
-    event = event_page.html.xpath('/html/body/div[2]/div[2]/div[1]/div[1]/header/div/div[2]/div[2]/span[1]/text()')
+    try:
+        event = event_page.html.xpath('/html/body/div[2]/div[2]/div[1]/div[1]/header/div/div[2]/div[2]/span[1]/text()')
+    except IndexError:
+        event = event_page.html.xpath('/html/body/div[2]/div[2]/div[1]/section[1]/div/div[2]/div[2]/div[1]/span[1]/text()')
+
     event_date_str = event[0]
 
     year = int(event_date_str.split(", ")[1])
@@ -61,8 +65,13 @@ def fighters_on_card(event_page: object) -> list:
     main_event = [main_left_fighter_url, main_right_fighter_url]
     card.append(main_event)
 
-    number_of_fights_left = int(event_page.html.xpath('/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tr[2]/td[1]')[0].text)
+    try:
+        number_of_fights_left = int(event_page.html.xpath('/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tr[2]/td[1]')[0].text)
+    except IndexError:
+        number_of_fights_left = int(event_page.html.xpath("/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tbody/tr[2]/td[1]")[0].text)
 
+
+    # TODO This will still not work when fights are "yet to come"
     for tr_number in range(2, number_of_fights_left + 2):
         left_fighter = event_page.html.xpath(f'/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tr[{tr_number}]/td[2]')
         if left_fighter:
