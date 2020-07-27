@@ -42,62 +42,119 @@ def next_event_date(event_page: object) -> object:
     event_date = pendulum.datetime(year, month, day)
     return event_date.to_date_string()
 
-
-def fighters_on_card(event_page: object) -> list:
+class FightersOnCard:
     """
+    Parse a sherdog.com fight card. The fights are organized in a lateral fashion. The person on the left is fighting
+    the person directly to the right of them. This class returns a nested list. Each nested list contains a fight.
 
-    Parse event_page and return fighters urls.
-
-    :param event_page: HTMLSession() of then next event url
-    :return card: List of fighters urls for all fighters on the card.
     """
-    card = []
+    def __init__(self, event_page):
+        self.event_page = event_page
 
-    main_event_left = event_page.html.xpath('/html/body/div[2]/div[2]/div[1]/section[1]/div/div[2]/div[2]/div[1]/a')
-
-    main_left = str(main_event_left[0]).split("href='")[1].split("' itemprop='url'>")[0]
-    main_left_fighter_url = f"https://www.sherdog.com{main_left}"
-
-    main_event_right = event_page.html.xpath('/html/body/div[2]/div[2]/div[1]/section[1]/div/div[2]/div[2]/div[2]/a')
-    main_right = str(main_event_right[0]).split("href='")[1].split("' itemprop='url'>")[0]
-    main_right_fighter_url = f"https://www.sherdog.com{main_right}"
-
-    main_event = [main_left_fighter_url, main_right_fighter_url]
-    card.append(main_event)
-
-    try:
-        number_of_fights_left = int(event_page.html.xpath('/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tr[2]/td[1]')[0].text)
-    except IndexError:
-        number_of_fights_left = int(event_page.html.xpath("/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tbody/tr[2]/td[1]")[0].text)
-
-    for tr_number in range(2, number_of_fights_left + 2):
-        left_fighter = event_page.html.xpath(f'/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tr[{tr_number}]/td[2]')
-                                            # /html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tbody/tr[2]/td[2]
-
-        if left_fighter:
-            l_fighter = left_fighter[0].html.split('href="/fighter/')[1].split('"><span')[0]
-            left_fighter_url = f"https://www.sherdog.com/fighter/{l_fighter}"
+    def fight_is_today(self):
+        """
+         If the fight is today then the html has a tbody tag to the code that is otherwise not there. I think this is
+         because it adds "YET TO COME next to each fighter on the webpage."
+        to the html.
+        :return:
+        """
+        html_tbody_tag = self.event_page.html.xpath(
+            '/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tbody/tr[2]/td[1]')
+        if html_tbody_tag:
+            fight_today = True
         else:
-            left_fighter = event_page.html.xpath(f'/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tbody/tr[{tr_number}]/td[2]')
-            l_fighter = left_fighter[0].html.split('href="/fighter/')[1].split('"><span')[0]
-            left_fighter_url = f"https://www.sherdog.com/fighter/{l_fighter}"
+            fight_today = False
 
+        return fight_today
 
-        right_fighter = event_page.html.xpath(f'/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tr[{tr_number}]/td[4]')
-
-        if right_fighter:
-            r_fighter = right_fighter[0].html.split('href="/fighter/')[1].split('"><span')[0]
-            right_fighter_url = f"https://www.sherdog.com/fighter/{r_fighter}"
+    def number_of_fights_in_event(self):
+        """
+        This looks at the left column and sums up the number of rows in a table. Each row represents a fight excluding
+        the main event.
+        :return:
+        """
+        if self.fight_is_today():
+            # Day of the event the html changes to say "YET TO COME" next to each fighter
+            number_of_fights_left = int(self.event_page.html.xpath(
+                '/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tbody/tr[2]/td[1]')[0].text)
         else:
-            right_fighter = event_page.html.xpath(f'/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tbody/tr[{tr_number}]/td[4]')
-            r_fighter = right_fighter[0].html.split('href="/fighter/')[1].split('"><span')[0]
-            right_fighter_url = f"https://www.sherdog.com/fighter/{r_fighter}"
+            number_of_fights_left = int(self.event_page.html.xpath(
+                '/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tr[2]/td[1]')[0].text)
 
-        fight = [left_fighter_url, right_fighter_url]
-        print(fight)
-        card.append(fight)
+        return number_of_fights_left
 
-    return card
+    def main_event_left(self):
+        main_event_left = self.event_page.html.xpath(
+            '/html/body/div[2]/div[2]/div[1]/section[1]/div/div[2]/div[2]/div[1]/a')
+        main_left = str(main_event_left[0]).split("href='")[1].split("' itemprop='url'>")[0]
+        main_left_fighter_url = f"https://www.sherdog.com{main_left}"
+        return main_left_fighter_url
+
+    def main_event_right(self):
+        main_event_right = self.event_page.html.xpath(
+            '/html/body/div[2]/div[2]/div[1]/section[1]/div/div[2]/div[2]/div[2]/a')
+        main_right = str(main_event_right[0]).split("href='")[1].split("' itemprop='url'>")[0]
+        main_right_fighter_url = f"https://www.sherdog.com{main_right}"
+
+        return main_right_fighter_url
+
+    def fights_on_the_left(self):
+        """
+        An ordered list of all fights on the left excluding the main event.
+        :return:
+        """
+        list_of_left_fighters = []
+
+        for tr_number in range(2, self.number_of_fights_in_event() + 2):
+
+            if self.fight_is_today():
+                left_fighter = self.event_page.html.xpath(
+                    f'/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tbody/tr[{tr_number}]/td[2]')
+            else:
+                left_fighter = self.event_page.html.xpath(
+                    f'/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tr[{tr_number}]/td[2]')
+
+            if left_fighter:
+                l_fighter = left_fighter[0].html.split('href="/fighter/')[1].split('"><span')[0]
+                left_fighter_url = f"https://www.sherdog.com/fighter/{l_fighter}"
+                list_of_left_fighters.append(left_fighter_url)
+
+        return list_of_left_fighters
+
+    def fights_on_the_right(self):
+        """
+        An ordered list of all fights on the right excluding the main event.
+        :return:
+        """
+        list_of_right_fighters = []
+
+        for tr_number in range(2, self.number_of_fights_in_event() + 2):
+            if self.fight_is_today():
+                right_fighter = self.event_page.html.xpath(
+                    f'/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tbody/tr[{tr_number}]/td[4]')
+            else:
+                right_fighter = self.event_page.html.xpath(
+                    f'/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tr[{tr_number}]/td[4]')
+
+            if right_fighter:
+                r_fighter = right_fighter[0].html.split('href="/fighter/')[1].split('"><span')[0]
+                right_fighter_url = f"https://www.sherdog.com/fighter/{r_fighter}"
+                list_of_right_fighters.append(right_fighter_url)
+
+        return list_of_right_fighters
+
+    def main(self):
+        fight_card = []
+        # Collect the main event and append it to the fight_card list.
+        fight_card.append([self.main_event_left(), self.main_event_right()])
+
+        left_fights = self.fights_on_the_left()
+        right_fights = self.fights_on_the_right()
+
+        for fight_number in range(0, (self.number_of_fights_in_event() - 1)):
+            fight_card.append([left_fights[fight_number], right_fights[fight_number]])
+
+        return fight_card
 
 
 def fighter_info(fighter_page: object) -> dict:
@@ -145,7 +202,7 @@ def next_ufc_event() -> dict:
     next_ufc_page = tools.html_session(next_ufc_url)
     next_ufc_dict = {"event_date": next_event_date(next_ufc_page)}
     # TODO add promotion to dict
-    fights = fighters_on_card(next_ufc_page)  # *
+    fights = FightersOnCard(next_ufc_page).main()
 
     for fight in fights:
         single_fight = []

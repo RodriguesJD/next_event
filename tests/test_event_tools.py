@@ -25,7 +25,7 @@ def test_fighters_on_card():
     events_page = tools.html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
     next_fight_url = event_tools.next_event_url(events_page)
     event_page = tools.html_session(next_fight_url)
-    fights = event_tools.fighters_on_card(event_page)
+    fights = event_tools.FightersOnCard(event_page).main()
     for fight in fights:
         for fighters_url in fight:
             assert requests.get(fighters_url).status_code == 200
@@ -35,7 +35,7 @@ def test_fighter_info():
     events_page = tools.html_session("https://www.sherdog.com/organizations/Ultimate-Fighting-Championship-UFC-2")
     next_event_url = event_tools.next_event_url(events_page)
     next_event_page = tools.html_session(next_event_url)
-    fights = event_tools.fighters_on_card(next_event_page)
+    fights = event_tools.FightersOnCard(next_event_page).main()
     for fight in fights:
         for fighter_url in fight:
             fighter_page = tools.html_session(fighter_url)

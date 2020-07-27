@@ -28,5 +28,5 @@ class NextUfcEvent:
 
 if __name__ == '__main__':
     ne = NextUfcEvent().main()
-
+    pprint(ne)
 
