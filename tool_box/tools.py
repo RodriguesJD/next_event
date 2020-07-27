@@ -1,9 +1,13 @@
 from requests_html import HTMLSession
+from requests.exceptions import SSLError
 
 
 def html_session(url):
     session = HTMLSession()
-    page = session.get(url)
+    try:
+        page = session.get(url=url)
+    except SSLError:
+        page = session.get(url=url, verify=False)
     return page
 
 

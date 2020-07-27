@@ -13,8 +13,7 @@ def test_next_betting_url():
     betting_page = betting_tools.betting_page()
     betting_events = betting_tools.betting_events(betting_page)
     next_betting_url = betting_tools.next_betting_url(betting_events, 'ufc')
-    session = HTMLSession()
-    assert session.get(next_betting_url).status_code == 200
+    assert tools.html_session(next_betting_url).status_code == 200
     assert 'ufc' in next_betting_url
 
 

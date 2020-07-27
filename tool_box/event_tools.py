@@ -40,7 +40,6 @@ def next_event_date(event_page: object) -> object:
     day = int(event_date_str.split(" ")[1].replace(",", ""))
 
     event_date = pendulum.datetime(year, month, day)
-
     return event_date.to_date_string()
 
 
@@ -55,6 +54,7 @@ def fighters_on_card(event_page: object) -> list:
     card = []
 
     main_event_left = event_page.html.xpath('/html/body/div[2]/div[2]/div[1]/section[1]/div/div[2]/div[2]/div[1]/a')
+
     main_left = str(main_event_left[0]).split("href='")[1].split("' itemprop='url'>")[0]
     main_left_fighter_url = f"https://www.sherdog.com{main_left}"
 
@@ -70,20 +70,31 @@ def fighters_on_card(event_page: object) -> list:
     except IndexError:
         number_of_fights_left = int(event_page.html.xpath("/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tbody/tr[2]/td[1]")[0].text)
 
-
-    # TODO This will still not work when fights are "yet to come"
     for tr_number in range(2, number_of_fights_left + 2):
         left_fighter = event_page.html.xpath(f'/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tr[{tr_number}]/td[2]')
+                                            # /html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tbody/tr[2]/td[2]
+
         if left_fighter:
             l_fighter = left_fighter[0].html.split('href="/fighter/')[1].split('"><span')[0]
             left_fighter_url = f"https://www.sherdog.com/fighter/{l_fighter}"
+        else:
+            left_fighter = event_page.html.xpath(f'/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tbody/tr[{tr_number}]/td[2]')
+            l_fighter = left_fighter[0].html.split('href="/fighter/')[1].split('"><span')[0]
+            left_fighter_url = f"https://www.sherdog.com/fighter/{l_fighter}"
+
 
         right_fighter = event_page.html.xpath(f'/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tr[{tr_number}]/td[4]')
+
         if right_fighter:
+            r_fighter = right_fighter[0].html.split('href="/fighter/')[1].split('"><span')[0]
+            right_fighter_url = f"https://www.sherdog.com/fighter/{r_fighter}"
+        else:
+            right_fighter = event_page.html.xpath(f'/html/body/div[2]/div[2]/div[1]/section[2]/div/div/table/tbody/tr[{tr_number}]/td[4]')
             r_fighter = right_fighter[0].html.split('href="/fighter/')[1].split('"><span')[0]
             right_fighter_url = f"https://www.sherdog.com/fighter/{r_fighter}"
 
         fight = [left_fighter_url, right_fighter_url]
+        print(fight)
         card.append(fight)
 
     return card
@@ -134,7 +145,7 @@ def next_ufc_event() -> dict:
     next_ufc_page = tools.html_session(next_ufc_url)
     next_ufc_dict = {"event_date": next_event_date(next_ufc_page)}
     # TODO add promotion to dict
-    fights = fighters_on_card(next_ufc_page)
+    fights = fighters_on_card(next_ufc_page)  # *
 
     for fight in fights:
         single_fight = []
